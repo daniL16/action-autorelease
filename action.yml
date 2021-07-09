@@ -1,0 +1,16 @@
+name: 'Generate Release'
+description: 'Auto generate release'
+
+inputs:
+   GITHUB_TOKEN:
+     description: 'Github token'
+     required: true
+runs:
+   using: 'docker'
+   image: 'Dockerfile'
+   args:
+      - ${{ inputs.GITHUB_TOKEN }}
+
+branding:
+  icon: 'tag'
+  color: 'green'
