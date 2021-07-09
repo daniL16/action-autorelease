@@ -11,6 +11,8 @@ dateLastRelease=$(github::get_lastReleaseDate)
 bodyRelease=$(github::getReleaseDescription ${dateLastRelease})
 
 git checkout -b ${branch_name};
+git -c user.name="GitHub Actions" -c user.email="actions@github.com";
+git push --set-upstream origin "HEAD:${branch_name}";
 github::create_pr ${branch_name} "Release ${version}" "${bodyRelease}"
 
 }
