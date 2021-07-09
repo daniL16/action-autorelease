@@ -1,0 +1,16 @@
+source "$SRC_DIR/src/github.sh"
+
+main(){
+
+export GITHUB_TOKEN="$1"
+
+version=github::get_version() 
+branch_name=release/${version}
+
+git checkout -b ${branch_name};
+
+## Get description
+#todo 
+github::create_pr ${branch_name} "Release ${version}"
+
+}

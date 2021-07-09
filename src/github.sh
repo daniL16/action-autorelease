@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+GITHUB_API_URI="https://api.github.com"
+GITHUB_API_HEADER="Accept: application/vnd.github.v3+json"
+
+github::create_pr(){
+  head="$1"
+  title="$2"
+  body="$3"
+  data="{\"title\":\"${title}\",\"base\":\"master\",\"head\": \"${head}\",\"body\": \"${body}\"}"
+  response=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN}" "$GITHUB_API_URI/repos/$GITHUB_REPOSITORY/pulls" -d "$data")
+  echo "${response}"
+}
+
+github::get_lastReleaseDate(){
+    release=$(curl "https://api.github.com/search/issues?q=is:pr%20is:closed%20label:release%20base:master%20repo:${repo}&per_page=1")
+    releaseDate=$(echo "$release" | jq --raw-output '.items[] | .created_at')
+    echo "$releaseDate"
+}
+
+github::get_version(){
+    latestVersion=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN} "$GITHUB_API_URI/repos/$GITHUB_REPOSITORY/releases/latest -s" | jq .tag_name -r)
+    mayor=$(echo $latestVersion | cut -f1 -d.)
+    minor=$(echo $latestVersion | cut -f2 -d.)
+    minor=$((minor+1))
+    echo "${mayor}.${minor}.0"
+}
+
+github::getReleaseDescription(){
+    dateFrom="$1"
+    body=$(curl "https://api.github.com/search/issues?q=is:pr%20is:closed%20updated:>${dateFrom}%20base:develop%20repo:$GITHUB_REPOSITORY")
+    pulls=$(echo "$body" | jq --raw-output '.items[] | {number: .number,title:.title, body:.body} | @base64')
+
+    releaseBody=''
+
+    for pr in $pulls; 
+    do
+        pull="$(echo "$pr" | base64 -d)"
+        title=$(echo "$pull" | jq --raw-output '.title')
+        number=$(echo "$pull" | jq --raw-output '.number')
+        releaseBody="${releaseBody} <br> #${number} ${title}"
+    done
+    
+    
+    echo "$releaseBody"
+    
+}
+
