@@ -19,7 +19,7 @@ github::get_lastReleaseDate(){
 }
 
 github::get_version(){
-    latestVersion=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN} "$GITHUB_API_URI/repos/$GITHUB_REPOSITORY/releases/latest -s" | jq .tag_name -r)
+    latestVersion=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN}" "$GITHUB_API_URI/repos/$GITHUB_REPOSITORY/releases/latest -s" | jq .tag_name -r)
     mayor=$(echo $latestVersion | cut -f1 -d.)
     minor=$(echo $latestVersion | cut -f2 -d.)
     minor=$((minor+1))
