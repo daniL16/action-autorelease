@@ -3,7 +3,7 @@ set -euo pipefail
 
 SRC_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
-if [ "$PR_SIZE_LABELER_HOME" == "/" ]; then
+if [ "$SRC_DIR" == "/" ]; then
   SRC_DIR=""
 fi
 
