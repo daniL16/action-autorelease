@@ -9,7 +9,6 @@ github::create_pr(){
   body="$3"
   data="{\"title\":\"${title}\",\"base\":\"master\",\"head\": \"${head}\",\"body\": \"${body}\"}"
   response=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN}" "$GITHUB_API_URI/repos/$GITHUB_REPOSITORY/pulls" -d "$data")
-  echo ${response}
   pr_number=$(echo ${response} | jq .number -r)
   github::set_release_label $pr_number
 }
@@ -50,7 +49,6 @@ github::getReleaseDescription(){
 
 github::set_release_label(){
     pr_number="$1"
-    echo {$pr_number}
     curl -sSL \
         -H "Authorization: token ${GITHUB_TOKEN}" \
         -H "${GITHUB_API_HEADER}" \
