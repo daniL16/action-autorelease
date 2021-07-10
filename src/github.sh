@@ -49,7 +49,7 @@ github::getReleaseDescription(){
 
 github::set_release_label(){
     pr_number="$1"
-
+    echo {$pr_number}
     curl -sSL \
         -H "Authorization: token ${GITHUB_TOKEN}" \
         -H "${GITHUB_API_HEADER}" \
