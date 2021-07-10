@@ -14,7 +14,7 @@ github::create_pr(){
 }
 
 github::get_lastReleaseDate(){
-    release=$(curl "https://api.github.com/search/issues?q=is:pr%20is:closed%20label:release%20base:master%20repo:$GITHUB_REPOSITORY&per_page=1")
+    release=$(curl "https://api.github.com/search/issues?q=is:pr%20is:merged%20label:release%20base:master%20repo:$GITHUB_REPOSITORY&per_page=1")
     releaseDate=$(echo "$release" | jq --raw-output '.items[] | .created_at')
     echo "$releaseDate"
 }
@@ -29,7 +29,7 @@ github::get_version(){
 
 github::getReleaseDescription(){
     dateFrom="$1"
-    body=$(curl "https://api.github.com/search/issues?q=is:pr%20is:closed%20updated:>${dateFrom}%20base:develop%20repo:$GITHUB_REPOSITORY")
+    body=$(curl "https://api.github.com/search/issues?q=is:pr%20is:merged%20updated:>${dateFrom}%20base:develop%20repo:$GITHUB_REPOSITORY")
     pulls=$(echo "$body" | jq --raw-output '.items[] | {number: .number,title:.title, body:.body} | @base64')
 
     releaseBody=''
@@ -39,7 +39,8 @@ github::getReleaseDescription(){
         pull="$(echo "$pr" | base64 -d)"
         title=$(echo "$pull" | jq --raw-output '.title')
         number=$(echo "$pull" | jq --raw-output '.number')
-        releaseBody="${releaseBody} <br> #${number} ${title}"
+        link=$(echo "$pull" | jq --raw-output '.body' | grep -Eo 'https://[^ >]+' )
+        releaseBody="${releaseBody} <br> #${number} ${title} ${link}"
     done
     
     
