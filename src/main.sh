@@ -11,6 +11,7 @@ dateLastRelease=$(github::get_lastReleaseDate)
 bodyRelease=$(github::getReleaseDescription ${dateLastRelease})
 
 git fetch --all;
+git pull;
 git checkout develop;
 git checkout -b ${branch_name};
 git push --set-upstream origin "HEAD:${branch_name}";
