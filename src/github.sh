@@ -14,7 +14,7 @@ github::create_pr(){
 }
 
 github::get_lastReleaseDate(){
-    release=$(curl "https://api.github.com/search/issues?q=is:pr%20is:merged%20label:release%20base:master%20repo:$GITHUB_REPOSITORY&per_page=1")
+    release=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/search/issues?q=is:pr%20is:merged%20label:release%20base:master%20repo:$GITHUB_REPOSITORY&per_page=1")
     releaseDate=$(echo "$release" | jq --raw-output '.items[] | .created_at')
     echo "$releaseDate"
 }
