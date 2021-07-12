@@ -14,7 +14,7 @@ github::create_pr(){
 }
 
 github::get_lastReleaseDate(){
-    release=$(curl "https://api.github.com/search/issues?q=is:pr%20is:merged%20label:release%20base:master%20repo:$GITHUB_REPOSITORY&per_page=1")
+    release=$(curl "https://api.github.com/search/issues?q=is:pr%20is:merged%20label:Release%20base:master%20repo:$GITHUB_REPOSITORY&per_page=1")
     releaseDate=$(echo "$release" | jq --raw-output '.items[] | .created_at')
     echo "$releaseDate"
 }
@@ -55,7 +55,7 @@ github::set_release_label(){
         -H "${GITHUB_API_HEADER}" \
         -X POST \
         -H "Content-Type: application/json" \
-        -d "{\"labels\":[\"release\"]}" \
+        -d "{\"labels\":[\"Release\"]}" \
         "${GITHUB_API_URI}/repos/${GITHUB_REPOSITORY}/issues/${pr_number}/labels"
   
 
