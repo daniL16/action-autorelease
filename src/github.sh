@@ -14,7 +14,6 @@ github::create_pr(){
 }
 
 github::get_lastReleaseDate(){
-    echo "${GITHUB_TOKEN}"
     release=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/search/issues?q=is:pr%20is:merged%20label:Release%20base:master%20repo:$GITHUB_REPOSITORY&per_page=1")
     releaseDate=$(echo "$release" | jq --raw-output '.items[] | .created_at')
     echo "$releaseDate"
@@ -29,7 +28,12 @@ github::get_version(){
 }
 
 github::getReleaseDescription(){
-    dateFrom="$1"
+    if [ -z "$1" ]
+    then
+      dateFrom=$(date +%Y-%m-%dT%H:%M:%S -d "yesterday")
+    else
+      dateFrom="$1"
+    fi
     body=$(curl "https://api.github.com/search/issues?q=is:pr%20is:merged%20updated:>${dateFrom}%20base:develop%20repo:$GITHUB_REPOSITORY")
     pulls=$(echo "$body" | jq --raw-output '.items[] | {number: .number,title:.title, body:.body} | @base64')
 
