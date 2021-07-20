@@ -8,6 +8,11 @@ version=$(github::get_version)
 branch_name=release/${version}
 
 dateLastRelease=$(github::get_lastReleaseDate)
+ if [ -z "$dateLastRelease" ]
+    then
+      dateLastRelease=$(date +%Y-%m-%dT%H:%M:%S -d "yesterday")
+fi
+echo "$dateLastRelease"
 bodyRelease=$(github::getReleaseDescription ${dateLastRelease})
 
 git fetch --all;
