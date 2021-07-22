@@ -34,7 +34,7 @@ github::getReleaseDescription(){
     else
       dateFrom="$1"
     fi
-    body=$(curl "https://api.github.com/search/issues?q=is:pr%20is:merged%20updated:>${dateFrom}%20base:develop%20repo:$GITHUB_REPOSITORY")
+    body=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN}" "https://api.github.com/search/issues?q=is:pr%20is:merged%20updated:>${dateFrom}%20base:develop%20repo:$GITHUB_REPOSITORY")
     pulls=$(echo "$body" | jq --raw-output '.items[] | {number: .number,title:.title, body:.body} | @base64')
 
     releaseBody=''
