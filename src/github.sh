@@ -8,6 +8,7 @@ github::create_pr(){
   title="$2"
   body="$3"
   data="{\"title\":\"${title}\",\"base\":\"master\",\"head\": \"${head}\",\"body\": \"${body}\"}"
+  echo "$data"
   response=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN}" "$GITHUB_API_URI/repos/$GITHUB_REPOSITORY/pulls" -d "$data")
   echo "$response"
   pr_number=$(echo ${response} | jq .number -r)
