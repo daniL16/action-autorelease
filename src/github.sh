@@ -46,7 +46,7 @@ github::getReleaseDescription(){
         pull="$(echo "$pr" | base64 -d)"
         title=$(echo "$pull" | jq --raw-output '.title')
         number=$(echo "$pull" | jq --raw-output '.number')
-        link=$(echo "$pull" | jq --raw-output '.body' | grep -Eo 'https://[^ >]+' )
+        link=$(echo "$pull" | jq --raw-output '.body' | grep -Eo 'https://https://app.clickup.com[^ >]+' )
         releaseBody="${releaseBody} <br> #${number} ${title} ${link}"
     done
     
