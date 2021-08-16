@@ -9,10 +9,10 @@ github::create_pr(){
   body="$3"
   data="{\"title\":\"${title}\",\"base\":\"master\",\"head\": \"${head}\",\"body\": \"${body}\"}"
   echo "$data"
-  #response=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN}" "$GITHUB_API_URI/repos/$GITHUB_REPOSITORY/pulls" -d "$data")
-  #echo "$response"
-  #pr_number=$(echo ${response} | jq .number -r)
-  #github::set_release_label $pr_number
+  response=$(curl -sSL -H "$GITHUB_API_HEADER" -H "Authorization: token ${GITHUB_TOKEN}" "$GITHUB_API_URI/repos/$GITHUB_REPOSITORY/pulls" -d "$data")
+  echo "$response"
+  pr_number=$(echo ${response} | jq .number -r)
+  github::set_release_label $pr_number
 }
 
 github::get_lastReleaseDate(){
