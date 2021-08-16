@@ -46,11 +46,11 @@ github::getReleaseDescription(){
         pull="$(echo "$pr" | base64 -d)"
         title=$(echo "$pull" | jq --raw-output '.title')
         number=$(echo "$pull" | jq --raw-output '.number')
-        link=$(echo "$pull" | jq --raw-output '.body' | grep -Eo 'https://app.clickup.com[^ >]+' | tr '\n' ' ' )
+        link=$(echo "$pull" | jq --raw-output '.body' | grep -Eo 'https://app.clickup.com[^ >]+')
         releaseBody="${releaseBody} <br> #${number} ${title}"
     done
     
-   
+    releaseBody=$(echo "$releaseBody" | jq --raw-output)
     echo "$releaseBody"
     
 }
