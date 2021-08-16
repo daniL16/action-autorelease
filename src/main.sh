@@ -19,8 +19,8 @@ git fetch --all;
 git checkout develop;
 git checkout -b ${branch_name};
 git push --set-upstream origin "HEAD:${branch_name}";
-echo "$bodyRelease"
+github::create_pr ${branch_name} "Release ${version}" "${bodyRelease}"
 exit 1;
-#github::create_pr ${branch_name} "Release ${version}" "${bodyRelease}"
+
 
 }
