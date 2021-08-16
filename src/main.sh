@@ -13,6 +13,7 @@ dateLastRelease=$(github::get_lastReleaseDate)
       dateLastRelease=$(date +%Y-%m-%dT%H:%M:%S -d "yesterday")
 fi
 
+echo "$dateLastRelease"
 bodyRelease=$(github::getReleaseDescription ${dateLastRelease})
 
 git fetch --all;
