@@ -21,7 +21,5 @@ git checkout develop;
 git checkout -b ${branch_name};
 git push --set-upstream origin "HEAD:${branch_name}";
 github::create_pr ${branch_name} "Release ${version}" "${bodyRelease}"
-exit 1;
-
 
 }
