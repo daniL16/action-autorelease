@@ -50,9 +50,7 @@ github::getReleaseDescription(){
         releaseBody="${releaseBody} <br> #${number} ${title}"
     done
     
-    releaseBody=$(echo "$releaseBody" | jq --raw-output .)
     echo "$releaseBody"
-    
 }
 
 github::set_release_label(){
